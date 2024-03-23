@@ -1,0 +1,60 @@
+{%extends 'step/index.html'%}
+{%block body%}
+
+<div class="card border-primary mb-5 mt-5">
+    
+    <div class="card-header text-center">customers</div>
+    <div class="card-body">
+       <a href="{%url 'add_customer'%}"><button type="button" class="btn btn-info mb-2 float-right" data-bs-toggle="modal" href="{%url 'add_customer'%}">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">action</th>
+            <th scope="col">business </th>
+            <th scope="col">First name</th>
+            <th scope="col">last name</th>
+            <th scope="col">phone number </th>
+            <th scope="col">credit  </th>
+          </tr>
+        </thead>
+        <tbody>
+           {% for i in customers%}
+        
+          <tr class="table-primary">
+            <th scope="row">
+                
+              <a href=""><button type="button" class="btn btn-dark me-1" href="">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+
+
+
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{student.id}}">
+                <i class="fa-solid fa-trash-can fa-lg"></i>
+              </button>
+
+
+
+
+            </th>
+            <td>{{i.business}}</td>
+            <td>{{i.first_name}}</td>
+            <td>{{i.last_name}}</td>
+            <td>{{i.phone_number}}</td>
+            <td>{{i.opening_credit}}</td>
+          </tr>
+          {%endfor%}
+    
+    </div>
+  </div>
+  </div>
+
+
+
+
+
+
+
+{%endblock%}

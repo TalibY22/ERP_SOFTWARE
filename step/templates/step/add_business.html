@@ -1,0 +1,25 @@
+{%extends "step/index.html"%}
+
+{%block body%}
+
+<div class="card bg-secondary mb-3" style="max-width: 20rem;">
+    <div class="card-header">Add ur business </div>
+    <div class="card-body">
+
+        <form a method="post">
+            {%csrf_token%}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-primary">Add business</button>
+        </form>
+      
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+{%endblock%}
