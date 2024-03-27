@@ -11,6 +11,7 @@ urlpatterns = [
   path("add_customer/",views.add_customer,name="add_customer"),
   path("customer/",views.customers,name="customer"),
   path("add_product/",views.add_product,name="add_product"),
-  path("delete/<int:id>",views.delete,name="delete")
+  path("delete/<int:id>",views.delete,name="delete"),
+  path("products/",views.products,name="products")
 
 ]

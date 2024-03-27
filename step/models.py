@@ -53,8 +53,9 @@ class Customer(models.Model):
     def __str__(self) -> str:
         return f'customer  {self.first_name}'
     
-
+#THe fuck why are u not working f u 
 class Products(models.Model):
+      user = models.ForeignKey(User,on_delete=models.CASCADE)
       product_name=models.CharField(max_length=200)
       supplier = models.ForeignKey(Supplier,on_delete=models.CASCADE)
       Buying_price = models.IntegerField()
@@ -65,6 +66,21 @@ class Products(models.Model):
 
       def __str__(self) -> str:
         return  self.product_name
+
+class Status(models.Model):
+    status=models.CharField(max_length=10)
+
+
+
+class Purchase(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    supplier = models.ForeignKey(Supplier,on_delete=models.CASCADE)
+    product = models.ForeignKey(Products,on_delete=models.CASCADE)
+    Buying_price = models.IntegerField()
+    date=models.DateTimeField()
+    status=models.ForeignKey(Status,on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
 
 
 

@@ -1,1 +1,7 @@
-add ability to upload a product image 
+add ability to upload a product image = done 
+
+fix the delete function = 
+
+fix the products thing =
+
+learn django signals =
