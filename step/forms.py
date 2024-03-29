@@ -1,5 +1,5 @@
 from django import forms
-from.models import Supplier,Business,Customer,test,Products
+from.models import Supplier,Business,Customer,test,Products,Purchase
 
 
 class SupplierForm(forms.ModelForm):
@@ -32,3 +32,8 @@ class testform(forms.ModelForm):
     class Meta:
         model = test
         fields = ['pic']
+
+class PurchaseForm(forms.ModelForm):
+    class Meta:
+        model = Purchase
+        fields='__all__'
