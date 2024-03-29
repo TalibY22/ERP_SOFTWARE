@@ -2,7 +2,7 @@
 {%block body%}
 
 <div class="card border-primary mb-3">
-    <div class="card-header text-center">Suppliers</div>
+    <div class="card-header text-center">Products</div>
     <div class="card-body">
       <table class="table table-hover">
         <thead>
@@ -18,7 +18,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for products in products %}
+          {% for product in products %}
           <tr class="table-primary">
             <td>
               <a href="#"><button type="button" class="btn btn-dark me-1 btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></button></a>
@@ -29,11 +29,12 @@
             </td>
             <td>{{ product.product_name }}</td>
             <td>{{ product.supplier }}</td>
-            <td>{{ product_Buying_price }}</td>
+            <td>{{ product.Buying_price }}</td>
             <td>{{ product.selling_price }}</td>
             <td>{{ product.alert_quantity }}</td>
             <td>{{ product.stock }}</td>
-            <td>{{ product.product_picture }}</td>
+          </tr>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

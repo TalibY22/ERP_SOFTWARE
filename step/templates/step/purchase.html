@@ -4,10 +4,10 @@
 
 
 <div class="card border-primary mb-3">
-    <div class="card-header text-center">Suppliers</div>
+    <div class="card-header text-center">Purchases</div>
     <div class="card-body">
       <table class="table table-hover">
-        <thead>
+        <thead >
           <tr>
             <th scope="col">Action</th>
             <th scope="col">Supplier</th>
@@ -24,7 +24,7 @@
           <tr class="table-primary">
             <td>
               <a href="#"><button type="button" class="btn btn-dark me-1 btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></button></a>
-              <form action="{% url 'delete' supplier.id %}" method="POST" style="display: inline;">
+              <form action="" method="POST" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Delete <i class="fa-solid fa-trash-can fa-lg"></i></button>
               </form>
@@ -34,11 +34,11 @@
               </div>
             </td>
             <td>{{ purchase.supplier }}</td>
-            <td>{{ purchase.ptoduct }}</td>
-            <td>{{ supplier.Buying_price }}</td>
-            <td>{{ supplier.date }}</td>
-            <td>{{ supplier.status }}</td>
-            <td>{{ supplier.quantity}}</td>
+            <td>{{ purchase.product }}</td>
+            <td>{{ purchase.Buying_price }}</td>
+            <td>{{ purchase.date }}</td>
+            <td>{{ purchase.status }}</td>
+            <td>{{ purchase.quantity}}</td>
 
 
         </tr>

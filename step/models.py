@@ -62,13 +62,16 @@ class Products(models.Model):
       selling_price = models.IntegerField()
       alert_quantity = models.IntegerField(default=3)
       stock = models.IntegerField(null=False)
-      product_picture = models.ImageField(upload_to='images')
+      product_picture = models.ImageField(upload_to='images/',null=True)
 
       def __str__(self) -> str:
         return  self.product_name
 
 class Status(models.Model):
     status=models.CharField(max_length=10)
+
+    def __str__(self) -> str:
+        return self.status
 
 
 

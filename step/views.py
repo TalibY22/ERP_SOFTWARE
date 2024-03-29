@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from.models import Supplier,Business,Customer,Products
-from .forms import SupplierForm,Businessform,CustomerForm,testform,ProductForm
+from.models import Supplier,Business,Customer,Products,Purchase
+from .forms import SupplierForm,Businessform,CustomerForm,testform,ProductForm,PurchaseForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -37,10 +37,12 @@ def customers(request):
 
 #used to show all the products
 def products(request):
-     products = Products.objects.all()
+     products = Products.objects.filter(user=request.user)
      return render(request,'step/products.html',{"products":products})
 
-
+def purchase(request):
+    purchase = Purchase.objects.filter(user=request.user)
+    return render(request,'step/purchase.html',{"purchases":purchase})
 
 
 
@@ -60,6 +62,24 @@ def add_customer(request):
             user_business = Business.objects.filter(user=request.user)
             form = CustomerForm(initial={'business': user_business.first()})
             return render(request,'step/add_customers.html',{'form':form})
+
+
+@login_required()
+def add_purchase(request):
+    if request.user.is_authenticated:
+     if request.method=='POST':
+        form = PurchaseForm(request.POST)
+        if form.is_valid():
+            new_purchase = form.save(commit=False)
+            new_purchase.user=request.user
+            new_purchase.save()
+
+            return render(request,'step/add_purchases.html',{"form":PurchaseForm(),"success":True})
+     else:
+
+        return render(request,'step/add_purchases.html',{"form":PurchaseForm()})
+
+
 
 
 
@@ -97,7 +117,7 @@ def add_product(request):
                new_product=form.save(commit=False)
                new_product.user=request.user
                new_product.save()
-               return render(request,'step/add_product.html',{"form":form(),"success":True})
+               return render(request,'step/add_product.html',{"form":form,"success":True})
 
     return render(request,'step/add_product.html',{"form":ProductForm()})
 
