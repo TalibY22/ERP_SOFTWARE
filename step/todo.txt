@@ -4,10 +4,12 @@ fix the delete function =
 
 add the edit function = done
 
-fix the products thing = 
+fix the products thing = done 
 
 set up email = done
 
+
+send  a email when the product reaches below the alert = 
 
 make a pos=
 
