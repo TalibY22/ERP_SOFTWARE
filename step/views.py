@@ -9,6 +9,11 @@ from django.urls import reverse
 def index(request):
     return render(request,'step/index.html')
 
+def home(request):
+    user = request.user
+    return render(request,"step/home.html",{"user":user})
+
+
 
 
 #used to run test
@@ -78,7 +83,7 @@ def add_purchase(request):
             product_purchased = new_purchase.product
             #Get the quantity of the product purchased 
             quantity_purchased = new_purchase.quantity
-            
+
             print(quantity_purchased)
             #Get the product quatinty for the product purchases
             update_quantity = Products.objects.get(pk=product_purchased.pk)

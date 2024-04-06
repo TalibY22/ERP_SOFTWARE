@@ -80,13 +80,31 @@ class Purchase(models.Model):
     supplier = models.ForeignKey(Supplier,on_delete=models.CASCADE)
     product = models.ForeignKey(Products,on_delete=models.CASCADE)
     Buying_price = models.IntegerField()
-    date=models.DateTimeField(auto_now_add=True)
+    date=models.DateTimeField(auto_now_add=True,null=True)
     status=models.ForeignKey(Status,on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
+class mode_of_payment(models.Model):
+    payment_mode=models.CharField(max_length=11)
 
 
 
+class sells(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    product_sold = models.ForeignKey(Products,on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
+    mode_of_payment=models.ForeignKey(mode_of_payment,on_delete=models.CASCADE)
+    quantity_sold=models.IntegerField()
+    total = models.IntegerField()
+
+    def save(self, *args, **kwargs):
+        #if there is product sold and quantity sold``
+        if self.product_sold and self.quantity_sold:
+            #times the products selling price * the quantity
+            self.total = self.product_sold.selling_price * self.quantity_sold
+        super().save(*args, **kwargs)
+
+   
 
 class test(models.Model):
     pic = models.ImageField()

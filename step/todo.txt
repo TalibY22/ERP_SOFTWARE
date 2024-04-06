@@ -7,11 +7,13 @@ add the edit function = done
 fix the products thing = done 
 
 set up email = done
-
+learn_django_orm in details
 
 send  a email when the product reaches below the alert = 
 
 make a pos=
+
+add the total to be shown on the form when making a sell = 
 
 add a search function/filter = 
 
