@@ -53,7 +53,7 @@ class Customer(models.Model):
     def __str__(self) -> str:
         return f'customer  {self.first_name}'
     
-#THe fuck why are u not working f u 
+#THe fuck why are u not wo
 class Products(models.Model):
       user = models.ForeignKey(User,on_delete=models.CASCADE)
       product_name=models.CharField(max_length=200)
@@ -62,7 +62,7 @@ class Products(models.Model):
       selling_price = models.IntegerField()
       alert_quantity = models.IntegerField(default=3)
       stock = models.IntegerField(null=False)
-      product_picture = models.ImageField(upload_to='images/',null=True)
+      product_picture = models.ImageField(upload_to='media/images/',null=True)
 
       def __str__(self) -> str:
         return  self.product_name
@@ -80,7 +80,7 @@ class Purchase(models.Model):
     supplier = models.ForeignKey(Supplier,on_delete=models.CASCADE)
     product = models.ForeignKey(Products,on_delete=models.CASCADE)
     Buying_price = models.IntegerField()
-    date=models.DateTimeField()
+    date=models.DateTimeField(auto_now_add=True)
     status=models.ForeignKey(Status,on_delete=models.CASCADE)
     quantity = models.IntegerField()
 

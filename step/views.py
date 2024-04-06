@@ -69,9 +69,29 @@ def add_purchase(request):
     if request.user.is_authenticated:
      if request.method=='POST':
         form = PurchaseForm(request.POST)
+
         if form.is_valid():
             new_purchase = form.save(commit=False)
             new_purchase.user=request.user
+
+            #Get the product the purchase is made for a
+            product_purchased = new_purchase.product
+            #Get the quantity of the product purchased 
+            quantity_purchased = new_purchase.quantity
+            
+            print(quantity_purchased)
+            #Get the product quatinty for the product purchases
+            update_quantity = Products.objects.get(pk=product_purchased.pk)
+
+            update_quantity.stock += quantity_purchased
+
+            update_quantity.save()
+            
+
+           
+           
+
+
             new_purchase.save()
 
             return render(request,'step/add_purchases.html',{"form":PurchaseForm(),"success":True})
@@ -140,9 +160,29 @@ def add_business(request):
 #need to fic this
 def delete(request,id):
     if request=='POST':
-        supplier = Supplier.objects.get(pk=id)
-        supplier.delete()
+        s = Customer.objects.get(pk=id)
+        s.delete()
+        
+        user_customer = request.user.business_set.all()
+        customers = Customer.objects.filter(business__in=user_customer)
+        return render(render,'step/customer.html',{"customers":customers})
+    else:
+      return HttpResponseRedirect(reverse('customer'))
 
-        return HttpResponseRedirect(reverse('index'))
-    
-    return HttpResponseRedirect(reverse('supplier'))
+
+def edit(request,id):
+    if request.method=='POST':
+       customer = Customer.objects.get(pk=id)
+       form=CustomerForm(request.POST,instance=customer)
+       if form.is_valid():
+           form.save()
+
+           return render(request,'step/customer_edit.html',{"form":form})
+    else:
+       customer = Customer.objects.get(pk=id)
+       form = CustomerForm(instance=customer)
+       return render(request, 'step/customer_edit.html', {
+    'form': form
+    })
+
+

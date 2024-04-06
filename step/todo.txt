@@ -2,6 +2,15 @@ add ability to upload a product image = done
 
 fix the delete function = 
 
-fix the products thing =
+add the edit function = done
+
+fix the products thing = 
+
+set up email = done
+
+
+make a pos=
+
+add a search function/filter = 
 
 learn django signals =

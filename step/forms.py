@@ -27,6 +27,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Products
         fields=['product_name','supplier','Buying_price','selling_price','alert_quantity','stock']
+        #fields='__all__'
 
 class testform(forms.ModelForm):
     class Meta:
@@ -36,5 +37,5 @@ class testform(forms.ModelForm):
 class PurchaseForm(forms.ModelForm):
     class Meta:
         model = Purchase
-        #fields=['supplier','product','Buying_price','date','status','quantity']
-        fields='__all__'
+        fields=['supplier','product','Buying_price','status','quantity']
+        

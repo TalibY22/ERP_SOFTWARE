@@ -216,11 +216,24 @@ a.sidebar-link:hover {
                 </li>
                 
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth3" aria-expanded="false" aria-controls="auth">
                         <i class="fa-solid fa-truck-fast"></i>
                         <span>Purchase</span>
                     </a>
+                    <ul id="auth3" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="{%url 'purchase'%}" class="sidebar-link">List purchase</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{%url 'add_purchase'%}" class="sidebar-link">add purchase</a>
+                        </li>
+                    </ul>
                 </li>
+                
+                
+                
+                
 
 
 
