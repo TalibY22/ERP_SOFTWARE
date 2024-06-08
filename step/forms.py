@@ -1,5 +1,5 @@
 from django import forms
-from.models import Supplier,Business,Customer,test,Products,Purchase
+from.models import Supplier,Business,Customer,test,Products,Purchase,sells,expenses
 
 
 class SupplierForm(forms.ModelForm):
@@ -29,6 +29,13 @@ class ProductForm(forms.ModelForm):
         fields=['product_name','supplier','Buying_price','selling_price','alert_quantity','stock']
         #fields='__all__'
 
+class SellForm(forms.ModelForm):
+    class Meta:
+        model = sells
+       # fields = ['product_sold','customer','mode_of_payment','quantity_sold','total']
+        fields ='__all__'
+
+
 class testform(forms.ModelForm):
     class Meta:
         model = test
@@ -39,3 +46,8 @@ class PurchaseForm(forms.ModelForm):
         model = Purchase
         fields=['supplier','product','Buying_price','status','quantity']
         
+
+class ExpenseForm(forms.ModelForm):
+    class Meta:
+        model = expenses 
+        fields='__all__'

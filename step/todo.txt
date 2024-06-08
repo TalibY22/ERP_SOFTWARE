@@ -2,12 +2,15 @@ add ability to upload a product image = done
 
 fix the delete function = 
 
-add the edit function = done
+
+
+
+add the edit function = done use the modal plz
 
 fix the products thing = done 
 
 set up email = done
-learn_django_orm in details
+learn_django_orm in details 
 
 send  a email when the product reaches below the alert = 
 
@@ -18,3 +21,13 @@ add the total to be shown on the form when making a sell =
 add a search function/filter = 
 
 learn django signals =
+
+customise the dashboard = done
+
+add expenses = done
+
+add profit table = or a way to account profit
+
+add daraja api for stk push 
+
+fix delete 

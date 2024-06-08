@@ -1,0 +1,40 @@
+{%extends 'step/index2.html'%}
+{%block body%}
+
+<div class="card border-primary mb-3">
+    <div class="card-header text-center">Expenses</div>
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Action</th>
+            <th scope="col">expense type</th>
+            <th scope="col">Amount to be paid</th>
+            <th scope="col">Amount paid</th>>
+          </tr>
+        </thead>
+        <tbody>
+          {% for expense in expenses %}
+          <tr class="table-primary">
+            <td>
+              <a href="#"><button type="button" class="btn btn-dark me-1 btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></button></a>
+              
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>{{ expense.expense_category }}</td>
+            <td>{{ expense.amount_to_bepaid }}</td>
+            <td>{{ expense.amount_paid }}</td>
+          </tr>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+{%endblock%}

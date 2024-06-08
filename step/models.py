@@ -87,6 +87,8 @@ class Purchase(models.Model):
 class mode_of_payment(models.Model):
     payment_mode=models.CharField(max_length=11)
 
+    def __str__(self) -> str:
+        return self.payment_mode
 
 
 class sells(models.Model):
@@ -105,6 +107,22 @@ class sells(models.Model):
         super().save(*args, **kwargs)
 
    
+
+class Expense_category(models.Model):
+      category = models.CharField(max_length=200)
+
+      def __str__(self) -> str:
+          return self.category
+
+class expenses(models.Model):
+      user = models.ForeignKey(User,on_delete=models.CASCADE)
+      expense_category = models.ForeignKey(Expense_category,on_delete=models.CASCADE)
+      amount_to_bepaid = models.IntegerField()
+      amount_paid = models.IntegerField()
+
+
+
+
 
 class test(models.Model):
     pic = models.ImageField()

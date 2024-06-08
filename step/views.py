@@ -1,17 +1,22 @@
 from django.shortcuts import render
-from.models import Supplier,Business,Customer,Products,Purchase
-from .forms import SupplierForm,Businessform,CustomerForm,testform,ProductForm,PurchaseForm
+from.models import Supplier,Business,Customer,Products,Purchase,sells,expenses
+from .forms import SupplierForm,Businessform,CustomerForm,testform,ProductForm,PurchaseForm,SellForm,ExpenseForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.db.models import Sum
 # Create your views here.
 #main styling
 def index(request):
-    return render(request,'step/index.html')
+    return render(request,'step/index2.html')
 
 def home(request):
     user = request.user
-    return render(request,"step/home.html",{"user":user})
+    total_sales =sells.objects.filter(user=request.user).aggregate(total_sales=Sum('total'))['total_sales']
+    total_expenses = expenses.objects.filter(user=request.user).aggregate(total_expenses=Sum('amount_to_bepaid'))['total_expenses']
+    profit = total_sales - total_expenses
+
+    return render(request,"step/home.html",{"user":user,"sales":total_sales,"profit":profit,"expenses":total_expenses})
 
 
 
@@ -49,7 +54,21 @@ def purchase(request):
     purchase = Purchase.objects.filter(user=request.user)
     return render(request,'step/purchase.html',{"purchases":purchase})
 
+def sales(request):
+    sales = sells.objects.filter(user=request.user)
+    return render(request,'step/sales.html',{'sales':sales})
 
+@login_required()
+def expenses1(request):
+    expense = expenses.objects.filter(user=request.user)
+    
+    return render(request,'step/expenses.html',{"expenses":expense})
+
+
+
+
+
+#VIEWS FOR ADDING 
 
 #used to add new customers 
 @login_required()
@@ -105,6 +124,45 @@ def add_purchase(request):
         return render(request,'step/add_purchases.html',{"form":PurchaseForm()})
 
 
+
+@login_required()
+def add_sales(request):
+    if request.method == 'POST':
+        form = SellForm(request.POST)
+
+        if form.is_valid():
+            new_sales = form.save(commit=False)
+            new_sales.user =request.user
+
+            product_sold = new_sales.product_sold 
+            quantity_sold = new_sales.quantity_sold
+
+            products = Products.objects.get(pk=product_sold.pk)
+
+            products.stock -= quantity_sold
+
+            products.save()
+            new_sales.save()
+
+            return render(request,'step/add_sales.html',{"form":SellForm(),"success":True})
+    else:
+         return render(request,'step/add_product.html',{"form":SellForm()})
+
+
+
+@login_required()
+def add_expense(request):
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST)
+
+        if form.is_valid():
+           expense = form.save(commit=False)
+           expense.user = request.user
+           expense.save()
+
+           return render(request,'step/add_expenses.html',{"form":ExpenseForm(),"success":True})
+    return render(request,'step/add_expenses.html',{"form":ExpenseForm()})
+    
 
 
 

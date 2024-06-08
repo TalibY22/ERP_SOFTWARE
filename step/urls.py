@@ -16,6 +16,12 @@ urlpatterns = [
   path("purchase/",views.purchase,name="purchase"),
   path("purchase/add",views.add_purchase,name="add_purchase"),
   path("customer/edit/<int:id>",views.edit,name="customer_edit"),
+  path("sell/add",views.add_sales,name="add_sales"),
+  path("sells/",views.sales,name="sales"),
+  path("expenses/",views.expenses1,name="expenses"),
+  path("expenses/add",views.add_expense,name="add_expense")
+
+
 
 #<td>
               #<img src="{{ MEDIA_URL }}{{ product.product_picture.url }}" alt="{{ product.product_name }} image" width="50" height="50">

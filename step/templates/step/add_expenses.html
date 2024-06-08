@@ -1,0 +1,28 @@
+{%extends "step/index2.html"%}
+{%block body %}
+
+
+{%if success%}
+<div class="alert alert-dismissible alert-success">The expense has been added to the database sucessfully <a href="{%url 'supplier' %}">Go to homepage</a> </div>
+{%endif%}
+
+
+
+<div class="container d-flex justify-content-center">
+    <div class="card border-primary mb-3">
+        <div class="card-header">Add expense</div>
+        <div class="card-body">
+            <form action="" method="post">
+                {%csrf_token%}
+                {{form.as_p}}
+                <button type="submit" class="btn btn-primary">add customer</button>
+            </form>
+        
+        </div>
+      </div>
+      </div>
+
+
+
+
+{%endblock%}

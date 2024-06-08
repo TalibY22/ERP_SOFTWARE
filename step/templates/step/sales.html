@@ -1,0 +1,44 @@
+{%extends 'step/index2.html'%}
+{%block body%}
+
+<div class="card border-primary mb-3">
+    <div class="card-header text-center">Products</div>
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Action</th>
+            <th scope="col">Product_sold</th>
+            <th scope="col">customer</th>
+            <th scope="col">mode_of_payment</th>
+            <th scope="col">quantity_sold</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sale in sales %}
+          <tr class="table-primary">
+            <td>
+              <a href="#"><button type="button" class="btn btn-dark me-1 btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></button></a>
+              
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>{{ sale.product_sold }}</td>
+            <td>{{ sale.customer }}</td>
+            <td>{{ sale.mode_of_payment }}</td>
+            <td>{{ sale.quantity_sold }}</td>
+            <td>{{ sale.total }}</td>
+          </tr>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+{%endblock%}
