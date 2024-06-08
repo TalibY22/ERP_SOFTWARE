@@ -23,10 +23,9 @@
           <tr class="table-primary">
             <th scope="row">
                 
-              <button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#update">
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#update{{i.id}}">
                 <i class="fa-solid fa-trash-can fa-lg"></i>
               </button>
-        
 
 
 
@@ -40,7 +39,7 @@
              
              <!--Update Modal-->
 
-             <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="addTodoModalLabel" aria-hidden="true">
+             <div class="modal fade" id="update{{i.id}}" tabindex="-1"  aria-labelledby="addTodoModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
