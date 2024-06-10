@@ -3,9 +3,11 @@ add ability to upload a product image = done
 fix the delete function = 
 
 
+Important search filter functionality pos = 
 
 
-add the edit function = done use the modal plz
+
+add the edit function = 
 
 fix the products thing = done 
 
@@ -30,4 +32,10 @@ add profit table = or a way to account profit
 
 add daraja api for stk push 
 
-fix delete 
+fix delete  = done
+
+
+
+fix opening credit = 
+
+when purchase is deleted make sure u delete the stock too = 

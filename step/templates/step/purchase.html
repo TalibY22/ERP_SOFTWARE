@@ -3,9 +3,21 @@
 {%block body%}
 
 
+
+
+
+
+
 <div class="card border-primary mb-3">
     <div class="card-header text-center">Purchases</div>
     <div class="card-body">
+      
+      <a href="{%url 'add_purchase'%}" class="btn btn-success mb-3">
+        <i class="fa-solid fa-plus"></i> Add
+    </a>
+      
+      
+      
       <table class="table table-hover">
         <thead >
           <tr>
@@ -24,14 +36,16 @@
           <tr class="table-secondary">
             <td>
               <a href="#"><button type="button" class="btn btn-dark me-1 btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></button></a>
-              <form action="" method="POST" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Delete <i class="fa-solid fa-trash-can fa-lg"></i></button>
-              </form>
               
-                  </div>
-                </div>
-              </div>
+
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{purchase.id}}">
+                <i class="fa-solid fa-trash-can fa-lg"></i>
+              </button>
+        
+
+              
+
+                 
             </td>
             <td>{{ purchase.supplier }}</td>
             <td>{{ purchase.product }}</td>
@@ -42,6 +56,38 @@
 
 
         </tr>
+
+
+
+
+            <!-- Delete Modal -->
+            <div class="modal" id="delete{{purchase.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">
+                      
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true"></span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete this Purchase</p>
+                  </div>
+                  <div class="modal-footer">
+                    <form action="{% url 'delete_customer' 3 purchase.id %}" method="POST">
+                      {% csrf_token %}
+                      <input type="submit" class="btn btn-primary" value="Delete">
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
           {% endfor %}
         </tbody>
       </table>

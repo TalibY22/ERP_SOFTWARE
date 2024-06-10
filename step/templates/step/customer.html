@@ -1,10 +1,32 @@
 {%extends 'step/index2.html'%}
 {%block body%}
 
+
+<div class="card bg-dark mb-4">
+  <div class="card-header">Filter</div>
+  <div class="card-body">
+    
+  </div>
+</div>
+
+
+
+
+
+
+
 <div class="card border-primary mb-5 mt-5">
     
-    <div class="card-header text-center">customers</div>
+    <div class="card-header text-center">customers
+
+
+    
+
+    </div>
     <div class="card-body">
+      <a href="{%url 'add_customer'%}" class="btn btn-success mb-3">
+        <i class="fa-solid fa-plus"></i> Add
+    </a>
        
       <table class="table table-hover">
         <thead>
@@ -23,11 +45,7 @@
           <tr class="table-primary">
             <th scope="row">
                 
-              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#update{{i.id}}">
-                <i class="fa-solid fa-trash-can fa-lg"></i>
-              </button>
-
-
+              <a href="#"><button type="button" class="btn btn-dark me-1 btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></button></a>
 
     
              
@@ -50,27 +68,11 @@
                       </div>
                       <div class="modal-body">
                           <form method="POST" action="">
-                              @csrf
+                              {%csrf_token%}
 
-                              <div class="form-group">
-                                  <label for="title">Title</label>
-                                  <input type="text" class="form-control" id="title" name="title" value="" required>
-                              </div>
+                              {{form.as_p}}
 
-                              <div class="form-group">
-                                  <label for="description">Description</label>
-                                  <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-                              </div>
-
-                              <div class="form-group">
-                                  <label for="status">Status</label>
-                                  <select class="form-control" id="status" name="status" value="" required>
-                                      <option value="low">Low</option>
-                                      <option value="medium">Medium</option>
-                                      <option value="high">High</option>
-                                  </select>
-                              </div>
-
+                             
                               <button type="submit" class="btn btn-primary">update Todo</button>
                           </form>
                       </div>
@@ -106,7 +108,7 @@
                       <p>Are you sure you want to delete this Customer</p>
                     </div>
                     <div class="modal-footer">
-                      <form action="{% url 'delete' i.id %}" method="POST">
+                      <form action="{% url 'delete_customer' 0 i.id %}" method="POST">
                         {% csrf_token %}
                         <input type="submit" class="btn btn-primary" value="Delete">
                       </form>

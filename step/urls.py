@@ -19,8 +19,10 @@ urlpatterns = [
   path("sell/add",views.add_sales,name="add_sales"),
   path("sells/",views.sales,name="sales"),
   path("expenses/",views.expenses1,name="expenses"),
-  path("expenses/add",views.add_expense,name="add_expense")
+  path("expenses/add",views.add_expense,name="add_expense"),
 
+
+  path("delete/<int:model>/<int:id>/",views.delete_customer,name="delete_customer")
 
 
 #<td>

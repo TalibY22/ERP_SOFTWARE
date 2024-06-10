@@ -120,7 +120,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-LOGIN_REDIRECT_URL = 'add_business'
+LOGIN_REDIRECT_URL = 'home'
 
 
 # Base url to serve media files  

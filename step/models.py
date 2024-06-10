@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -14,7 +15,6 @@ class Business(models.Model):
     
 
 class Business_location(models.Model):
-    Business = models.ForeignKey(Business,on_delete=models.CASCADE)
     location = models.CharField(max_length=200)
     phone_number  = models.IntegerField()
 
@@ -84,6 +84,21 @@ class Purchase(models.Model):
     status=models.ForeignKey(Status,on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
+    def delete(self, *args, **kwargs):
+        #u calling the primary  model referencing the stock level  and telling it to delete
+        self.product.stock -= self.quantity
+        #Then call the save method to save the initial method 
+        self.product.save()
+        
+        
+        super().delete(*args, **kwargs)
+
+
+
+
+
+
+
 class mode_of_payment(models.Model):
     payment_mode=models.CharField(max_length=11)
 
@@ -105,6 +120,17 @@ class sells(models.Model):
             #times the products selling price * the quantity
             self.total = self.product_sold.selling_price * self.quantity_sold
         super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        #u calling the primary  model referencing the stock level  and telling it to delete
+        self.product_sold.stock += self.quantity_sold
+        #Then call the save method to save the initial method 
+        self.product_sold.save()
+        
+        
+        super().delete(*args, **kwargs)
+
+
 
    
 

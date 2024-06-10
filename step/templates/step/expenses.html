@@ -19,9 +19,12 @@
             <td>
               <a href="#"><button type="button" class="btn btn-dark me-1 btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></button></a>
               
-                  </div>
-                </div>
-              </div>
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{expense.id}}">
+                <i class="fa-solid fa-trash-can fa-lg"></i>
+              </button>
+        
+
+
             </td>
             <td>{{ expense.expense_category }}</td>
             <td>{{ expense.amount_to_bepaid }}</td>
@@ -29,6 +32,41 @@
           </tr>
             </td>
           </tr>
+          
+          
+          <!-- Delete Modal -->
+          <div class="modal" id="delete{{expense.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">
+                    expense
+                  </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Are you sure you want to delete this expense</p>
+                </div>
+                <div class="modal-footer">
+                  <form action="{% url 'delete_customer' 4 expense.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-primary" value="Delete">
+                  </form>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+          
+          
+          
+          
+          
+          
           {% endfor %}
         </tbody>
       </table>

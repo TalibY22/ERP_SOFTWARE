@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from.models import Supplier,Business,Customer,Products,Purchase,sells,expenses
 from .forms import SupplierForm,Businessform,CustomerForm,testform,ProductForm,PurchaseForm,SellForm,ExpenseForm
 from django.contrib.auth.decorators import login_required
@@ -14,14 +14,14 @@ def home(request):
     user = request.user
     total_sales =sells.objects.filter(user=request.user).aggregate(total_sales=Sum('total'))['total_sales']
     total_expenses = expenses.objects.filter(user=request.user).aggregate(total_expenses=Sum('amount_to_bepaid'))['total_expenses']
-    profit = total_sales - total_expenses
+    profit =0
 
     return render(request,"step/home.html",{"user":user,"sales":total_sales,"profit":profit,"expenses":total_expenses})
 
 
 
-
 #used to run test
+
 def test(request):
     return render(request,"step/test.html",{"form":testform})
 
@@ -41,6 +41,7 @@ def supplier(request):
 def customers(request):
 
     user_customer = request.user.business_set.all()
+    
     customers = Customer.objects.filter(business__in=user_customer)
 
     return render(request,'step/customer.html',{'customers':customers})
@@ -249,3 +250,41 @@ def edit(request,id):
     })
 
 
+
+
+#Logic to solve my problems
+def delete(model,id):
+    if model==0:
+        customer = Customer.objects.get(pk=id)
+        customer.delete()
+        return HttpResponseRedirect(reverse('customer'))
+
+    elif model==1:
+        customer = Supplier.objects.get(pk=id)
+        customer.delete()
+        return HttpResponseRedirect(reverse('supplier'))
+    elif model==2:
+        customer = Products.objects.get(pk=id)
+        customer.delete()
+        return HttpResponseRedirect(reverse('products'))
+    elif model==3:
+        customer = Purchase.objects.get(pk=id)
+        customer.delete()
+        return HttpResponseRedirect(reverse('purchase'))
+    elif model==4:
+        customer = expenses.objects.get(pk=id)
+        customer.delete()
+        return HttpResponseRedirect(reverse('expenses'))
+    elif model==5:
+        customer = sells.objects.get(pk=id)
+        customer.delete()
+        return HttpResponseRedirect(reverse('sales'))
+   
+   
+   
+    return -0        
+
+def delete_customer(request,model,id):
+    if request.method=='POST':
+        return delete(model,id)
+        
