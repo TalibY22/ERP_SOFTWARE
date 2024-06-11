@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from.models import Supplier,Business,Customer,Products,Purchase,sells,expenses
+from.models import Supplier,Business,Customer,Products,Purchase,sells,expenses,notifications
 from .forms import SupplierForm,Businessform,CustomerForm,testform,ProductForm,PurchaseForm,SellForm,ExpenseForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -36,6 +36,16 @@ def supplier(request):
      suppliers = Supplier.objects.filter(business__in=user_businesses)
 
      return render(request,'step/suppliers.html',{'suppliers':suppliers})
+
+
+@login_required()
+def notify(request):
+     #get all the business the user owns
+     #retrieve all the suppliers associated with the users business
+     notification = notifications.objects.filter(user=request.user)
+
+     return render(request,'step/notification.html',{'notifications':notification})
+
 
 #used to show all the customers
 def customers(request):

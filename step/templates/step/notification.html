@@ -1,0 +1,29 @@
+{%extends 'step/index2.html'%}
+
+{%block body%}
+
+
+
+{%for i in notifications%}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Stock alert</div>
+                <div class="card-body">
+                    <h5 class="card-title">Need restocking</h5>
+                    <p class="card-text">{{i.Message}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+
+
+  {%endfor%}
+
+
+{%endblock%}

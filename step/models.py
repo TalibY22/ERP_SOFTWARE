@@ -1,6 +1,8 @@
 from typing import Any
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user
+
 
 
 
@@ -147,6 +149,13 @@ class expenses(models.Model):
       amount_paid = models.IntegerField()
 
 
+
+class notifications(models.Model):
+      user = models.ForeignKey(User,on_delete=models.CASCADE)
+      Message = models.TextField()
+      timestamp = models.DateTimeField(auto_now_add=True)
+      
+      
 
 
 

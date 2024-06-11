@@ -38,4 +38,9 @@ fix delete  = done
 
 fix opening credit = 
 
-when purchase is deleted make sure u delete the stock too = 
+when purchase is deleted make sure u delete the stock too = done
+
+add the ability to change the status on purchases = 
+
+
+add stock adjustment = 
