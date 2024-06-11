@@ -30,8 +30,9 @@ urlpatterns = [
   path("expenses/add",views.add_expense,name="add_expense"),
   path("notifications/",views.notify,name='notify'),
 
-  path("delete/<int:model>/<int:id>/",views.delete_customer,name="delete_customer")
-
+  path("delete/<int:model>/<int:id>/",views.delete_customer,name="delete_customer"),
+  path("search/",views.search,name="search")
+  
 
 #<td>
               #<img src="{{ MEDIA_URL }}{{ product.product_picture.url }}" alt="{{ product.product_name }} image" width="50" height="50">

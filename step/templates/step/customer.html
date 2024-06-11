@@ -24,7 +24,14 @@
 
     </div>
     <div class="card-body">
-      <a href="{%url 'add_customer'%}" class="btn btn-success mb-3">
+
+      <form class="form-inline my-2 my-lg-0 justify-content-end" action="{% url 'search' %}" method="get">
+        <input class="form-control mr-sm-2" type="search" placeholder="enter name to search" name="query" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    
+
+      <a href="{%url 'add_customer'%}" class="btn btn-success mb-4 ">
         <i class="fa-solid fa-plus"></i> Add
     </a>
        
@@ -134,6 +141,67 @@
     </div>
   </div>
   </div>
+
+                
+             <!--  Search Results -->
+   
+    {% if query %}
+    <p>Results for "{{ query }}":</p>
+    {% if results %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th scope="col">action</th>
+                  <th scope="col">business </th>
+                  <th scope="col">First name</th>
+                  <th scope="col">last name</th>
+                  <th scope="col">phone number </th>
+                  <th scope="col">credit  </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in results %}
+                <tr class="table-primary">
+                  <td>
+
+                    <a href="#"><button type="button" class="btn btn-dark me-1 btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></button></a>
+
+    
+             
+
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{i.id}}">
+                      <i class="fa-solid fa-trash-can fa-lg"></i>
+                    </button>
+
+
+                  </td>
+
+
+
+                  <td>{{i.business}}</td>
+                  <td>{{i.first_name}}</td>
+                  <td>{{i.last_name}}</td>
+                  <td>{{i.phone_number}}</td>
+                  <td>{{i.opening_credit}}</td>
+               
+                  </tr>
+                
+                
+                
+                
+                
+                
+                
+                  {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+{% else %}
+    <p>Please enter a search term.</p>
+{% endif %}
+ 
 
 
 

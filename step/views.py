@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db.models import Sum
+from django.db.models import Q
+
+
 # Create your views here.
 #main styling
 def index(request):
@@ -299,3 +302,15 @@ def delete_customer(request,model,id):
     if request.method=='POST':
         return delete(model,id)
         
+
+
+def search(request):
+    query = request.GET.get('query')
+    results = []
+    if query:
+        results = Customer.objects.filter(
+            Q(first_name__icontains=query) |
+            Q(last_name__icontains=query) 
+        )
+    return render(request, 'step/customer.html', {'results': results, 'query': query})
+

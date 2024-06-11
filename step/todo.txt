@@ -1,6 +1,6 @@
 add ability to upload a product image = done 
 
-fix the delete function = 
+fix the delete function = done
 
 
 Important search filter functionality pos = 
