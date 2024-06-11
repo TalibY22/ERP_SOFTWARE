@@ -6,6 +6,12 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db.models import Sum
 from django.db.models import Q
+import requests
+from requests.auth import HTTPBasicAuth
+import datetime
+import json
+import base64
+from ..erp import settings
 
 
 # Create your views here.
@@ -314,3 +320,93 @@ def search(request):
         )
     return render(request, 'step/customer.html', {'results': results, 'query': query})
 
+def pos(request):
+
+    return render(request, 'step/pos.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#DARAJA API CODE BELOW
+
+
+
+
+
+
+
+
+
+
+
+def get_access_token():
+    consumer_key = settings.CONSUMER_KEY
+    consumer_secret = settings.CONSUMER_SECRET
+    url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+
+    response = requests.get(url,  auth=HTTPBasicAuth(consumer_key, consumer_secret))
+    
+    if response.status_code == 200:
+        token = json.loads(response.text)
+        access_token = token['access_token']
+        return access_token
+  
+def intiate_stk_push(request):
+    password = None
+    amount = 0
+    passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
+    timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    token = get_access_token() 
+    
+    concatenated_string = f"{settings.BUSINESS_SHORT_CODE}{passkey}{timestamp}"
+    
+    # Encode the concatenated string using base64 encoding
+    password = base64.b64encode(concatenated_string.encode()).decode()
+    
+    
+    phone_number=None
+    Amount=None
+    
+
+    headers = {
+        "Authorization": "Bearer {}".format(token),
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "BusinessShortCode": settings.BUSINESS_SHORT_CODE,
+        "Password": password,
+        "Timestamp": timestamp,
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": amount,
+        "PartyA": phone_number,
+        "PartyB": settings.BUSINESS_SHORT_CODE,
+        "PhoneNumber": phone_number,
+        "CallBackURL": settings.MPESA_CALLBACK_URL,
+        "AccountReference": "AWK SOFTWARES",
+        "TransactionDesc": "Payment for goods/services"
+    }
+    response = requests.post(settings.MPESA_STK_PUSH_URL, json=payload, headers=headers)
+
+    # Process the response
+    if response.status_code == 200:
+        return 1
+
+
+                    
+                     

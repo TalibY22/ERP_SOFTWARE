@@ -31,7 +31,9 @@ urlpatterns = [
   path("notifications/",views.notify,name='notify'),
 
   path("delete/<int:model>/<int:id>/",views.delete_customer,name="delete_customer"),
-  path("search/",views.search,name="search")
+  path("search/",views.search,name="search"),
+  path("pos/",views.pos,name="pos"),
+
   
 
 #<td>
