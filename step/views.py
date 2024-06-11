@@ -206,12 +206,13 @@ def add_product(request):
     if request.user.is_authenticated:
         if request.method =='POST':
         
-            form = ProductForm(request.POST)
+            form = ProductForm(request.POST,request.FILES)
             if form.is_valid():
                new_product=form.save(commit=False)
                new_product.user=request.user
                new_product.save()
                return render(request,'step/add_product.html',{"form":form,"success":True})
+            return render(request, 'step/add_product.html', {"form": form})
 
     return render(request,'step/add_product.html',{"form":ProductForm()})
 

@@ -16,7 +16,7 @@
     <div class="card border-primary mb-3 mt-2">
         <div class="card-header">Add Product</div>
         <div class="card-body">
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 {%csrf_token%}
                 {{form.as_p}}
                 <button type="submit" class="btn btn-primary">Add product</button>

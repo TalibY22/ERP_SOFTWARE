@@ -26,7 +26,8 @@ class CustomerForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Products
-        fields=['product_name','supplier','Buying_price','selling_price','alert_quantity','stock']
+        fields=['product_name','supplier','Buying_price','selling_price','alert_quantity','stock','product_picture']
+        product_picture = forms.ImageField()
         #fields='__all__'
 
 class SellForm(forms.ModelForm):
