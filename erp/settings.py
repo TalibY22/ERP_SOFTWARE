@@ -147,7 +147,3 @@ EMAIL_HOST_USER = ''
 
 
 #Daraja settings
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
-BUSINESS_SHORT_CODE = 174379
-MPESA_STK_PUSH_URL = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'

@@ -11,9 +11,8 @@ from requests.auth import HTTPBasicAuth
 import datetime
 import json
 import base64
-from ..erp import settings
-
-
+from erp import settings
+from .daraja import get_access_token,generate_password
 # Create your views here.
 #main styling
 def index(request):
@@ -21,9 +20,13 @@ def index(request):
 
 def home(request):
     user = request.user
-    total_sales =sells.objects.filter(user=request.user).aggregate(total_sales=Sum('total'))['total_sales']
+    total_sales =sells.objects.filter(user=request.user).aggregate(total_sales=Sum('Amount_due'))['total_sales']
     total_expenses = expenses.objects.filter(user=request.user).aggregate(total_expenses=Sum('amount_to_bepaid'))['total_expenses']
-    profit =0
+    profit = total_sales
+    if total_expenses and total_sales == int:
+        profit = total_sales - total_expenses
+       
+
 
     return render(request,"step/home.html",{"user":user,"sales":total_sales,"profit":profit,"expenses":total_expenses})
 
@@ -304,6 +307,17 @@ def delete(model,id):
    
     return -0        
 
+
+
+
+
+
+
+
+
+
+
+
 def delete_customer(request,model,id):
     if request.method=='POST':
         return delete(model,id)
@@ -319,6 +333,16 @@ def search(request):
             Q(last_name__icontains=query) 
         )
     return render(request, 'step/customer.html', {'results': results, 'query': query})
+
+
+#pass the id in future things 
+def transaction(request):
+
+    return render(request, 'step/add_transaction.html')
+ 
+
+
+
 
 def pos(request):
 
@@ -354,59 +378,68 @@ def pos(request):
 
 
 
-def get_access_token():
-    consumer_key = settings.CONSUMER_KEY
-    consumer_secret = settings.CONSUMER_SECRET
-    url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
 
-    response = requests.get(url,  auth=HTTPBasicAuth(consumer_key, consumer_secret))
+
+
+def initiate_stk_push(request):
+    phone_number = request.POST.get('phoneNumber')
+    amount = request.POST.get('amount')
     
-    if response.status_code == 200:
-        token = json.loads(response.text)
-        access_token = token['access_token']
-        return access_token
-  
-def intiate_stk_push(request):
-    password = None
-    amount = 0
-    passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
+   
+    shortcode =  settings.BUSINESS_SHORT_CODE
+    passkey = settings.DARAJA_PASSKEY
+   
+
+    # Generate the timestamp and password
     timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    token = get_access_token() 
+    password = generate_password(shortcode, passkey, timestamp)
     
-    concatenated_string = f"{settings.BUSINESS_SHORT_CODE}{passkey}{timestamp}"
+    # Get access token
     
-    # Encode the concatenated string using base64 encoding
-    password = base64.b64encode(concatenated_string.encode()).decode()
-    
-    
-    phone_number=None
-    Amount=None
-    
+    token = get_access_token()
+   
+       
 
+    # Set headers and payload
     headers = {
-        "Authorization": "Bearer {}".format(token),
+        "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
-
+    
     payload = {
-        "BusinessShortCode": settings.BUSINESS_SHORT_CODE,
+        "BusinessShortCode": shortcode,
         "Password": password,
         "Timestamp": timestamp,
         "TransactionType": "CustomerPayBillOnline",
         "Amount": amount,
         "PartyA": phone_number,
-        "PartyB": settings.BUSINESS_SHORT_CODE,
+        "PartyB": shortcode,
         "PhoneNumber": phone_number,
-        "CallBackURL": settings.MPESA_CALLBACK_URL,
+        "CallBackURL": "https://mydomain.com/path",
         "AccountReference": "AWK SOFTWARES",
         "TransactionDesc": "Payment for goods/services"
     }
-    response = requests.post(settings.MPESA_STK_PUSH_URL, json=payload, headers=headers)
 
-    # Process the response
+    
+    print("Payload:", payload)
+
+    
+    stk_push_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+    response = requests.post(stk_push_url, json=payload, headers=headers)
+
+    
+    print("Response Status Code:", response.status_code)
+    print("Response Content:", response.json())
+
+    
+    context = {
+        "success": response.status_code == 200,
+        "status_code": response.status_code,
+        "response": response.json()
+    }
     if response.status_code == 200:
-        return 1
+        return render(request, 'step/test.html',{"success": True, "response":context})
+    return render(request, 'step/test.html',{"success": True, "response":context})
 
 
-                    
-                     
+

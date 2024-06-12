@@ -30,11 +30,12 @@ class ProductForm(forms.ModelForm):
         product_picture = forms.ImageField()
         #fields='__all__'
 
+
 class SellForm(forms.ModelForm):
     class Meta:
         model = sells
-       # fields = ['product_sold','customer','mode_of_payment','quantity_sold','total']
-        fields ='__all__'
+        fields = ['customer','Product_sold','mode_of_payment','quantity_sold','Payment_status']
+
 
 
 class testform(forms.ModelForm):

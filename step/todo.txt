@@ -20,9 +20,9 @@ make a pos=
 
 add the total to be shown on the form when making a sell = 
 
-add a search function/filter = 
+add a search function/filter = done
 
-learn django signals =
+learn django signals = i have a working knowledge
 
 customise the dashboard = done
 
@@ -30,7 +30,7 @@ add expenses = done
 
 add profit table = or a way to account profit
 
-add daraja api for stk push 
+add daraja api for stk push = done
 
 fix delete  = done
 
@@ -42,5 +42,8 @@ when purchase is deleted make sure u delete the stock too = done
 
 add the ability to change the status on purchases = 
 
-
+add_ability_to_check_stock_report = 
+logic to handle slection of payment status in sell form = 
+button to take to the transcation page if payment is partial or unpaidc= 
+add logic to prevent selling of product when there is none or quantity is more than the stock level = 
 add stock adjustment = 

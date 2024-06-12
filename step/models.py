@@ -97,7 +97,11 @@ class Purchase(models.Model):
 
 
 
+class Payment_status(models.Model):
+      status=models.CharField(max_length=255)
 
+      def __str__(self) -> str:
+          return self.status
 
 
 
@@ -110,24 +114,25 @@ class mode_of_payment(models.Model):
 
 class sells(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    product_sold = models.ForeignKey(Products,on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
+    Product_sold = models.ForeignKey(Products,on_delete=models.CASCADE)
     mode_of_payment=models.ForeignKey(mode_of_payment,on_delete=models.CASCADE)
     quantity_sold=models.IntegerField()
-    total = models.IntegerField()
+    Amount_due = models.IntegerField()
+    Payment_status=models.ForeignKey(Payment_status,on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         #if there is product sold and quantity sold``
-        if self.product_sold and self.quantity_sold:
+        if self.Product_sold and self.quantity_sold:
             #times the products selling price * the quantity
-            self.total = self.product_sold.selling_price * self.quantity_sold
+            self.Amount_due = self.Product_sold.selling_price * self.quantity_sold
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         #u calling the primary  model referencing the stock level  and telling it to delete
-        self.product_sold.stock += self.quantity_sold
+        self.Product_sold.stock += self.quantity_sold
         #Then call the save method to save the initial method 
-        self.product_sold.save()
+        self.Product_sold.save()
         
         
         super().delete(*args, **kwargs)
@@ -155,7 +160,18 @@ class notifications(models.Model):
       Message = models.TextField()
       timestamp = models.DateTimeField(auto_now_add=True)
       
-      
+
+
+
+
+
+
+class Transactions(models.Model):
+      sellid=models.ForeignKey(sells,on_delete=models.CASCADE)
+      mode_of_payment=models.ForeignKey(mode_of_payment,on_delete=models.CASCADE)
+      Amount_paid = models.IntegerField()
+      date_paid = models.DateTimeField(auto_now_add=True)
+
 
 
 
