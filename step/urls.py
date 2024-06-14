@@ -33,7 +33,7 @@ urlpatterns = [
   path("delete/<int:model>/<int:id>/",views.delete_customer,name="delete_customer"),
   path("search/",views.search,name="search"),
   path("pos/",views.pos,name="pos"),
-  path("transaction/",views.transaction,name='transaction'),
+  path("transaction/<int:id>",views.transaction,name='transaction'),
 
 
   path("stk/",views.initiate_stk_push,name="stk_push"),

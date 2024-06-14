@@ -97,7 +97,7 @@ class Purchase(models.Model):
 
 
 
-class Payment_status(models.Model):
+class payment_status(models.Model):
       status=models.CharField(max_length=255)
 
       def __str__(self) -> str:
@@ -119,7 +119,8 @@ class sells(models.Model):
     mode_of_payment=models.ForeignKey(mode_of_payment,on_delete=models.CASCADE)
     quantity_sold=models.IntegerField()
     Amount_due = models.IntegerField()
-    Payment_status=models.ForeignKey(Payment_status,on_delete=models.CASCADE)
+    Amount_paid = models.IntegerField(default=0)
+    Payment_status=models.ForeignKey(payment_status,on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         #if there is product sold and quantity sold``
@@ -171,6 +172,21 @@ class Transactions(models.Model):
       mode_of_payment=models.ForeignKey(mode_of_payment,on_delete=models.CASCADE)
       Amount_paid = models.IntegerField()
       date_paid = models.DateTimeField(auto_now_add=True)
+
+      def save(self, *args, **kwargs):
+        #if there is product sold and quantity sold``
+        amount_due = self.Amount_paid - self.sellid.Amount_due
+        
+        if self.Amount_paid >= self.sellid.Amount_due:
+            self.sellid.Amount_paid=self.Amount_paid
+            self.sellid.Payment_status = payment_status.objects.get(status='Paid')  # Assuming 'Paid' status exists
+        else:
+            self.sellid.Amount_paid = self.Amount_paid 
+            self.sellid.Payment_status = payment_status.objects.get(status='Partial')  # Assuming 'Partial Payment' status exists
+        
+        self.sellid.save()
+        super().save(*args, **kwargs)
+         
 
 
 

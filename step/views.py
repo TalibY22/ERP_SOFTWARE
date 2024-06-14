@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from.models import Supplier,Business,Customer,Products,Purchase,sells,expenses,notifications
+from.models import Supplier,Business,Customer,Products,Purchase,sells,expenses,notifications,Transactions,mode_of_payment
 from .forms import SupplierForm,Businessform,CustomerForm,testform,ProductForm,PurchaseForm,SellForm,ExpenseForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -157,7 +157,7 @@ def add_sales(request):
             new_sales = form.save(commit=False)
             new_sales.user =request.user
 
-            product_sold = new_sales.product_sold 
+            product_sold = new_sales.Product_sold 
             quantity_sold = new_sales.quantity_sold
 
             products = Products.objects.get(pk=product_sold.pk)
@@ -166,8 +166,9 @@ def add_sales(request):
 
             products.save()
             new_sales.save()
+            sell_id = new_sales.id
 
-            return render(request,'step/add_sales.html',{"form":SellForm(),"success":True})
+            return HttpResponseRedirect(reverse('transaction', args=[sell_id]))
     else:
          return render(request,'step/add_product.html',{"form":SellForm()})
 
@@ -336,10 +337,34 @@ def search(request):
 
 
 #pass the id in future things 
-def transaction(request):
+def transaction(request,id):
+    sale = sells.objects.get(id=id)
+    mode_of_payment_instance = get_object_or_404(mode_of_payment, id=1)
+        
+    if request.method=='POST':
+        Amount = int(request.POST.get('amount'))
+       
+        
+        transaction = Transactions(
+            sellid=sale,
+            mode_of_payment=mode_of_payment_instance,
+            Amount_paid=Amount
+        )
+        transaction.save()
+       
+        return HttpResponseRedirect(reverse('sales'))
+    
+    else:
+         return render(request, 'step/add_transaction.html')
 
-    return render(request, 'step/add_transaction.html')
- 
+      
+    
+
+    
+    
+    
+    
+   
 
 
 
