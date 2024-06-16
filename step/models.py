@@ -137,6 +137,8 @@ class sells(models.Model):
         
         
         super().delete(*args, **kwargs)
+    def __str__(self) -> str:
+        return self.customer.first_name
 
 
 

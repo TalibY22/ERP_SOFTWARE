@@ -23,12 +23,11 @@ def generate_password(shortcode, passkey, timestamp):
     password = base64.b64encode(concatenated_string.encode()).decode('utf-8')
     return password
 
-def initiate_stk_push():
-    phone_number = 254700445982
-    amount = 10
+def initiate_stk_push(amount,phone_number):
+    
     
    
-    shortcode =  174379
+    shortcode =  settings.BUSINESS_SHORT_CODE
     passkey = settings.DARAJA_PASSKEY
    
 

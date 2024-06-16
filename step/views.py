@@ -12,7 +12,12 @@ import datetime
 import json
 import base64
 from erp import settings
-from .daraja import get_access_token,generate_password
+from .daraja import initiate_stk_push
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from.signals import stk_push_success
+from django.dispatch import receiver
+
 # Create your views here.
 #main styling
 def index(request):
@@ -87,6 +92,11 @@ def expenses1(request):
     
     return render(request,'step/expenses.html',{"expenses":expense})
 
+def view_transaction(request):
+     transactions = Transactions.objects.filter(sellid__user=request.user)
+     cash_total =Transactions.objects.filter(sellid__user=request.user ,mode_of_payment__id=1).aggregate(total=Sum('Amount_paid'))['total']
+     mpesa_total =Transactions.objects.filter(sellid__user=request.user , mode_of_payment__id=2).aggregate(total=Sum('Amount_paid'))['total']
+     return render(request,'step/transactions.html',{"transactions":transactions,"cash_total":cash_total,"mpesa_total":mpesa_total})
 
 
 
@@ -159,10 +169,14 @@ def add_sales(request):
 
             product_sold = new_sales.Product_sold 
             quantity_sold = new_sales.quantity_sold
+            
 
             products = Products.objects.get(pk=product_sold.pk)
 
             products.stock -= quantity_sold
+            total = products.selling_price * quantity_sold
+            request.session['Total'] = total
+    
 
             products.save()
             new_sales.save()
@@ -337,25 +351,50 @@ def search(request):
 
 
 #pass the id in future things 
+
 def transaction(request,id):
     sale = sells.objects.get(id=id)
-    mode_of_payment_instance = get_object_or_404(mode_of_payment, id=1)
+    
+    
+    
+    
         
     if request.method=='POST':
+        zd = sale.mode_of_payment
         Amount = int(request.POST.get('amount'))
+        phonenumber = request.POST.get('phoneNumber')
        
+        if 'mpesa' in request.POST:
+            initiate_stk_push(Amount,phonenumber)
+            zd=2
+            mode_of_payment_instance = get_object_or_404(mode_of_payment, id=zd)
         
-        transaction = Transactions(
-            sellid=sale,
+            transaction = Transactions(
+              sellid=sale,
             mode_of_payment=mode_of_payment_instance,
             Amount_paid=Amount
-        )
-        transaction.save()
+               )
+            transaction.save()
+            return HttpResponseRedirect(reverse('sales'))
+
+        else:
+     
+         
+         zd = 1
+         mode_of_payment_instance = get_object_or_404(mode_of_payment, id=zd)
+        
+         transaction = Transactions(
+              sellid=sale,
+            mode_of_payment=mode_of_payment_instance,
+            Amount_paid=Amount
+         )
+         transaction.save()
        
-        return HttpResponseRedirect(reverse('sales'))
+         return HttpResponseRedirect(reverse('sales'))
     
     else:
-         return render(request, 'step/add_transaction.html')
+       total =request.session.get('Total')
+       return render(request, 'step/add_transaction.html',{"total":total})
 
       
     
@@ -376,11 +415,27 @@ def pos(request):
 
 
 
+@csrf_exempt
+def mpesa_callback(request):
+        if request.method == 'POST':
+         data = request.json
+        # Process the callback data here
+        # You can save the data to the database or perform other actions
+         print(f"Callback data: {data}")
+        # Extract the necessary information from the callback data
+         callback_data = data.get('Body').get('stkCallback')
+         merchant_request_id = callback_data.get('MerchantRequestID')
+         checkout_request_id = callback_data.get('CheckoutRequestID')
+         result_code = callback_data.get('ResultCode')
+         result_desc = callback_data.get('ResultDesc')
+         amount = None
+         mpesa_receipt_number = None
+         transaction_date = None
+         phone_number = None
 
-
-
-
-
+         return JsonResponse({"status": "success"})
+        return JsonResponse({"status":"denied"})
+   
 
 
 
@@ -403,68 +458,6 @@ def pos(request):
 
 
 
-
-
-
-def initiate_stk_push(request):
-    phone_number = request.POST.get('phoneNumber')
-    amount = request.POST.get('amount')
-    
-   
-    shortcode =  settings.BUSINESS_SHORT_CODE
-    passkey = settings.DARAJA_PASSKEY
-   
-
-    # Generate the timestamp and password
-    timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    password = generate_password(shortcode, passkey, timestamp)
-    
-    # Get access token
-    
-    token = get_access_token()
-   
-       
-
-    # Set headers and payload
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "BusinessShortCode": shortcode,
-        "Password": password,
-        "Timestamp": timestamp,
-        "TransactionType": "CustomerPayBillOnline",
-        "Amount": amount,
-        "PartyA": phone_number,
-        "PartyB": shortcode,
-        "PhoneNumber": phone_number,
-        "CallBackURL": "https://mydomain.com/path",
-        "AccountReference": "AWK SOFTWARES",
-        "TransactionDesc": "Payment for goods/services"
-    }
-
-    
-    print("Payload:", payload)
-
-    
-    stk_push_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
-    response = requests.post(stk_push_url, json=payload, headers=headers)
-
-    
-    print("Response Status Code:", response.status_code)
-    print("Response Content:", response.json())
-
-    
-    context = {
-        "success": response.status_code == 200,
-        "status_code": response.status_code,
-        "response": response.json()
-    }
-    if response.status_code == 200:
-        return render(request, 'step/test.html',{"success": True, "response":context})
-    return render(request, 'step/test.html',{"success": True, "response":context})
 
 
 

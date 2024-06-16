@@ -1,0 +1,101 @@
+{%extends 'step/index2.html'%}
+{%block body%}
+
+
+<div class="card bg-light mb-4">
+    <div class="card-header">Header</div>
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Cash payments</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{cash_total}}ksh</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Mpesa payments</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{mpesa_total}}ksh</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    
+    
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="card border-primary mb-3 mt-4">
+    <div class="card-header text-center">transaction</div>
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Action</th>
+            <th scope="col">Customer</th>
+            <th scope="col">mode_of_payment</th>
+            <th scope="col">Amount_paid</th>
+
+            <th scope="col">date paid</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in transactions %}
+          <tr class="table-primary">
+            <td>
+              <a href="#"><button type="button" class="btn btn-dark me-1 btn-sm">Edit <i class="fa-solid fa-pen-to-square"></i></button></a>
+              
+            
+
+
+            </td>
+            <td>{{ i.sellid }}</td>
+            <td>{{ i.mode_of_payment }}</td>
+            <td>{{ i.Amount_paid }}</td>
+            <td>{{ i.date_paid }}</td>
+          </tr>
+            </td>
+          </tr>
+          
+          
+          <!-- Delete Modal -->
+          
+          
+          
+          
+          
+          
+          
+          
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+{%endblock%}

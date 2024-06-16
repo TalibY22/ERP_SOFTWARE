@@ -3,10 +3,20 @@
 {%block body%}
 
 
+<div class="card bg-light mb-3">
+    <div class="card-header">Amount to be paid</div>
+    <div class="card-body">
+       <h1>{{total}}KSH</h1>
+    </div>
+</div>
+
+
+
 
 <div class="card bg-light mb-3">
     <div class="card-header">ADD TRANSACATION</div>
     <div class="card-body">
+
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#push">Mpesa </button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cash">Cash </button>
     </div>
@@ -32,7 +42,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{%url 'stk_push' %}">
+                <form method="POST" action="">
                    {%csrf_token%}
                   <div class="form-group">
                     <label for="phoneNumber">Phone Number</label>
@@ -42,7 +52,7 @@
                     <label for="amount">Amount</label>
                     <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
                 </div>
-                
+                <input type="hidden" class="form-control" id="id" name="mpesa" value="mpesa">
                    
                     <button type="submit" class="btn btn-primary">stk push</button>
                 </form>
@@ -72,6 +82,11 @@
                     <label for="amount">Amount</label>
                     <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter amount paid" required>
                 </div>
+                 
+               
+                   
+            
+
                 
                    
                     <button type="submit" class="btn btn-primary">Confirm</button>

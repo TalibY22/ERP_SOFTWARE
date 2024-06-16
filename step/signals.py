@@ -4,6 +4,17 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from .models import Products, notifications
 from django.contrib.auth.models import User
+from django.dispatch import Signal
+
+
+
+#signal for updating mode of payment 
+stk_push_success = Signal()
+
+
+
+
+
 
 @receiver(post_save, sender=Products)
 @receiver(post_delete, sender=Products)
