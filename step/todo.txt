@@ -43,7 +43,6 @@ when purchase is deleted make sure u delete the stock too = done
 add the ability to change the status on purchases = 
 
 add_ability_to_check_stock_report = 
-logic to handle slection of payment status in sell form = 
-button to take to the transcation page if payment is partial or unpaidc= 
-add logic to prevent selling of product when there is none or quantity is more than the stock level = 
+logic to handle slection of payment status in sell form = done
+button to take to the transcation page if payment is partial or unpaid = 
 add stock adjustment = 

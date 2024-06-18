@@ -174,13 +174,18 @@ def add_sales(request):
             products = Products.objects.get(pk=product_sold.pk)
 
             products.stock -= quantity_sold
-            total = products.selling_price * quantity_sold
-            request.session['Total'] = total
-    
+           
+            if quantity_sold > products.stock:
+               return render(request,'step/add_sales.html',{"form":SellForm(),"fail":True})
+
+
 
             products.save()
             new_sales.save()
             sell_id = new_sales.id
+           
+
+                
 
             return HttpResponseRedirect(reverse('transaction', args=[sell_id]))
     else:
@@ -393,8 +398,12 @@ def transaction(request,id):
          return HttpResponseRedirect(reverse('sales'))
     
     else:
-       total =request.session.get('Total')
-       return render(request, 'step/add_transaction.html',{"total":total})
+      
+       totals = sells.objects.get(id=id)
+       total = totals.Amount_due
+       Amount_paid = totals.Amount_paid
+
+       return render(request, 'step/add_transaction.html',{"total":total,"paid":Amount_paid})
 
       
     

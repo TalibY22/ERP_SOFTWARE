@@ -29,7 +29,7 @@ urlpatterns = [
   path("expenses/",views.expenses1,name="expenses"),
   path("expenses/add",views.add_expense,name="add_expense"),
   path("notifications/",views.notify,name='notify'),
-  path("transactions/",views.view_transaction,name='transaction'),
+  path("transactions/",views.view_transaction,name='transactions'),
 
 
   path("delete/<int:model>/<int:id>/",views.delete_customer,name="delete_customer"),
